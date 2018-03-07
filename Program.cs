@@ -1,6 +1,8 @@
-﻿using System;
+﻿using MiniBlinkPinvoke;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace MiniBlinkPinvokeDemo
@@ -15,6 +17,7 @@ namespace MiniBlinkPinvokeDemo
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            BlinkBrowserPInvoke.ResourceAssemblys.Add("MiniBlinkPinvokeDemo", System.Reflection.Assembly.GetExecutingAssembly());
             Application.Run(new Form1());
         }
     }
