@@ -1,5 +1,4 @@
 ﻿using MiniBlinkPinvoke;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,11 +17,16 @@ namespace MiniBlinkPinvokeDemo
         public Form1()
         {
             InitializeComponent();
+            blinkBrowser1.GlobalObjectJs = this;
         }
-
+        [JSFunctin]
+        public void Console_WriteLine(string msg)
+        {
+            MessageBox.Show("Console_WriteLine ：" + msg);
+        }
         private void button1_Click(object sender, EventArgs e)
         {
-           
+
             blinkBrowser1.Url = this.textBox1.Text.Trim();
 
             blinkBrowser1.Focus();
