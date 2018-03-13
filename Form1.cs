@@ -26,11 +26,9 @@ namespace MiniBlinkPinvokeDemo
         }
         private void button1_Click(object sender, EventArgs e)
         {
-
             blinkBrowser1.Url = this.textBox1.Text.Trim();
-
             blinkBrowser1.Focus();
-            BlinkBrowserPInvoke.wkeSetHandleOffset(blinkBrowser1.handle, Location.X, Location.Y);
+            //BlinkBrowserPInvoke.wkeSetHandleOffset(blinkBrowser1.handle, Location.X, Location.Y);
         }
         private void blinkBrowser1_OnUrlChangeCall(string url)
         {
@@ -55,6 +53,11 @@ namespace MiniBlinkPinvokeDemo
         private void BlinkBrowser1_OnUrlChange2Call(string url)
         {
             textBox1.Text = url;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            MiniBlinkPinvoke.BlinkBrowserPInvoke.wkeSetDebugConfig(blinkBrowser1.handle, "showDevTools", @"C:\Users\Administrator\Desktop\miniblink180308\front_end\inspector.html");
         }
     }
 
