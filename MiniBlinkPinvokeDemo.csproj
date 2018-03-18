@@ -77,7 +77,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MiniBlinkPinvoke\MiniBlink\MiniBlink.csproj">
+    <ProjectReference Include="..\MiniBlink\MiniBlink.csproj">
       <Project>{FF9F4C6E-B7BA-498A-9F3F-49F27CE9AF1A}</Project>
       <Name>MiniBlink</Name>
     </ProjectReference>

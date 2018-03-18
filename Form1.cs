@@ -36,6 +36,8 @@ namespace MiniBlinkPinvokeDemo
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            //BlinkBrowserPInvoke.wkeSetHandle(blinkBrowser1.handle, this.Handle);
+            //BlinkBrowserPInvoke.wkeSetHandleOffset(blinkBrowser1.handle, blinkBrowser1.Location.X-2,0);
             blinkBrowser1.OnUrlChange2Call += BlinkBrowser1_OnUrlChange2Call;
             blinkBrowser1.OnTitleChangeCall += BlinkBrowser1_OnTitleChangeCall;
             blinkBrowser1.DocumentReadyCallback += BlinkBrowser1_DocumentReadyCallback;
@@ -57,7 +59,7 @@ namespace MiniBlinkPinvokeDemo
 
         private void button2_Click(object sender, EventArgs e)
         {
-            MiniBlinkPinvoke.BlinkBrowserPInvoke.wkeSetDebugConfig(blinkBrowser1.handle, "showDevTools", @"C:\Users\Administrator\Desktop\miniblink180308\front_end\inspector.html");
+            MiniBlinkPinvoke.BlinkBrowserPInvoke.wkeSetDebugConfig(blinkBrowser1.handle, "showDevTools", @"G:\qqmsg\370588543\FileRecv\miniblink180317\front_end\inspector.html");
         }
     }
 

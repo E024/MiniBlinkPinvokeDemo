@@ -51,7 +51,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(277, 21);
             this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "file:///E:/Project/GitHub/MiniBlinkPinvokeDemo/index.html";
+            this.textBox1.Text = "http://www.w3school.com.cn/tiy/t.asp?f=html_select";
             // 
             // blinkBrowser1
             // 
