@@ -47,9 +47,9 @@ namespace MiniBlinkPinvokeDemo
         {
         }
 
-        private void BlinkBrowser1_OnTitleChangeCall(IntPtr webView, IntPtr param, IntPtr title)
+        private void BlinkBrowser1_OnTitleChangeCall(string title)
         {
-            Text = MiniBlinkPinvoke.BlinkBrowserPInvoke.wkeGetString(title).Utf8IntptrToString();
+            Text = title;
         }
 
         private void BlinkBrowser1_OnUrlChange2Call(string url)
