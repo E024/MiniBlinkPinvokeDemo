@@ -14,10 +14,12 @@ namespace MiniBlinkPinvokeDemo
 {
     public partial class Form1 : Form
     {
+        static BlinkBrowser mb = null;
         public Form1()
         {
             InitializeComponent();
             blinkBrowser1.GlobalObjectJs = this;
+            mb = blinkBrowser1;
         }
         [JSFunctin]
         public void Console_WriteLine(string msg)
@@ -42,7 +44,31 @@ namespace MiniBlinkPinvokeDemo
             blinkBrowser1.OnTitleChangeCall += BlinkBrowser1_OnTitleChangeCall;
             blinkBrowser1.DocumentReadyCallback += BlinkBrowser1_DocumentReadyCallback;
         }
+        [JSFunctin]
+        public static async void DOTaskWithAsync(string str)
+        {
+            await Task.Run(() =>
+            {
+                Dotaskfunction(str);
+            });
+        }
+        public static void Dotaskfunction(string s)
+        {
+            Thread.Sleep(1000 * 5);
+            if (mb != null)
+            {
+                mb.Invoke(new Action<string>(
+                    (sx) =>
+                    {
+                        string _str = "ceshi" + sx;
+                        _str = System.Web.HttpUtility.UrlEncode(_str);
+                        string invokeJSStr = "asyncTest('" + _str + "')";
+                        mb.InvokeJS(invokeJSStr);
+                    }
+                    ), s);
+            }
 
+        }
         private void BlinkBrowser1_DocumentReadyCallback()
         {
         }

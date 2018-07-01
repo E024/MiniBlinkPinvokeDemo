@@ -18,8 +18,8 @@ namespace MiniBlinkPinvokeDemo
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             BlinkBrowserPInvoke.ResourceAssemblys.Add("MiniBlinkPinvokeDemo", System.Reflection.Assembly.GetExecutingAssembly());
-           //Application.Run(new Form1());
-            Application.Run(new TabForm());
+            Application.Run(new Form1());
+            //Application.Run(new TabForm());
         }
     }
 }

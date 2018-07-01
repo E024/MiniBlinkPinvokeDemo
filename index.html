@@ -5,9 +5,9 @@
         测试页面
     </title>
     <script>
-        Console_WriteLine("测试调用后台方法" + Date.parse(new Date())) 
+        Console_WriteLine("测试调用后台方法" + Date.parse(new Date()))
 
-       alert("hhaxx是");
+        alert("hhaxx是");
 
         //var testJson = '{ "name": "he" }';
 
@@ -30,6 +30,29 @@
             testJson = '{ "name": "he11111111111111111111111" }';
             console.log("testJson:" + testJson);
         }, 2000);
+
+
+        var sleep = function (time) {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    resolve();
+                }, time);
+            })
+        };
+        function asyncTest(str) {
+         Console_WriteLine("async down   ########" +unescape(str));
+        }
+        var start = async function () {
+            // 在这里使用起来就像同步代码那样直观
+            console.log('start');
+            alert(1);
+            DOTaskWithAsync("前台传值到后台");
+            alert(2);
+            console.log('end');
+        };
+
+        start();
+    
     </script>
 </head>
 <!--设置margin才能显示阴影-->
