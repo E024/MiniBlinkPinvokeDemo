@@ -86,8 +86,8 @@ namespace MiniBlinkPinvokeDemo
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //blinkBrowser1.ShowDevtools(@"G:\qqmsg\370588543\FileRecv\miniblink-180713\front_end\inspector.html");
-            MiniBlinkPinvoke.BlinkBrowserPInvoke.wkeSetDebugConfig(blinkBrowser1.handle, "showDevTools", @"G:\qqmsg\370588543\FileRecv\miniblink-180713\front_end\inspector.html");
+           blinkBrowser1.ShowDevtools(Application.StartupPath + @"\front_end\inspector.html");
+            //MiniBlinkPinvoke.BlinkBrowserPInvoke.wkeSetDebugConfig(blinkBrowser1.handle, "showDevTools", Application.StartupPath + @"\front_end\inspector.html");
         }
     }
 
