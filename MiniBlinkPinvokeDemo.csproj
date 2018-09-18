@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\XLEngine.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +82,7 @@
       <DependentUpon>TabForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="libs\XL\download\id.dat" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -92,13 +94,26 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MiniBlink\MiniBlink.csproj">
+    <ProjectReference Include="..\MiniBlinkPinvoke\MiniBlink\MiniBlink.csproj">
       <Project>{FF9F4C6E-B7BA-498A-9F3F-49F27CE9AF1A}</Project>
       <Name>MiniBlink</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="libs\XL\download\atl71.dll" />
+    <Content Include="libs\XL\download\dl_peer_id.dll" />
+    <Content Include="libs\XL\download\download_engine.dll" />
+    <Content Include="libs\XL\download\MiniThunderPlatform.exe" />
+    <Content Include="libs\XL\download\minizip.dll" />
+    <Content Include="libs\XL\download\msvcp71.dll" />
+    <Content Include="libs\XL\download\msvcr71.dll" />
+    <Content Include="libs\XL\download\XLBugHandler.dll" />
+    <Content Include="libs\XL\download\XLBugReport.exe" />
+    <Content Include="libs\XL\download\zlib1.dll" />
+    <Content Include="libs\XL\xldl.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

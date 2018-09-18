@@ -44,7 +44,61 @@ namespace MiniBlinkPinvokeDemo
             blinkBrowser1.OnUrlChange2Call += BlinkBrowser1_OnUrlChange2Call;
             blinkBrowser1.OnTitleChangeCall += BlinkBrowser1_OnTitleChangeCall;
             blinkBrowser1.DocumentReadyCallback += BlinkBrowser1_DocumentReadyCallback;
+            blinkBrowser1.OnDownloadFile += BlinkBrowser1_OnDownloadFile;
         }
+        System.Windows.Forms.Timer queryTimer = new System.Windows.Forms.Timer();
+        private IntPtr taskPtr;
+        XL.DownTaskInfo taskInfo = new XL.DownTaskInfo();
+        /// <summary>
+        /// 下载文件
+        /// </summary>
+        /// <param name="url"></param>
+        private void BlinkBrowser1_OnDownloadFile(string url)
+        {
+            //只是简单实现下载，可以模仿其他下载界面，先弹出一个窗体，让用户选择保存路径文件名什么的。
+            //使用前先拷贝 libs/XL 目录中文件到软件运行目录。
+            var initSuccess = XL.XL_Init();
+            if (initSuccess)
+            {
+                XL.DownTaskParam p = new XL.DownTaskParam()
+                {
+                    IsResume = 0,
+                    szTaskUrl = textBox1.Text,
+                    szFilename = url.Substring(url.LastIndexOf('/') + 1),//简单处理文件名，实际中还需要单独处理，这里有BUG
+                    szSavePath = AppDomain.CurrentDomain.BaseDirectory
+                };
+                taskPtr = XL.XL_CreateTask(p);
+                var startSuccess = XL.XL_StartTask(taskPtr);
+                if (startSuccess)
+                {
+                    queryTimer.Interval = 500;//半秒查询一次状态
+                    queryTimer.Tick += (s, e) =>
+                    {
+                        var queryRes = XL.XL_QueryTaskInfoEx(taskPtr, taskInfo);
+                        if (queryRes)
+                        {
+                            if (taskInfo.stat == XL.DOWN_TASK_STATUS.TSC_COMPLETE)
+                            {
+                                queryTimer.Enabled = false;
+                                //下载完成。
+                                Console.WriteLine("下载完成");
+                            }
+                            else
+                            {
+                                Console.WriteLine(string.Format("{0} {1} 进度{2},速度{3},状态{4}", DateTime.Now, taskInfo.szFilename, taskInfo.fPercent, taskInfo.nSpeed, taskInfo.stat));
+                            }
+                        }
+                    };
+                    queryTimer.Enabled = true;
+                }
+            }
+            else
+            {
+                MessageBox.Show("XL_Init初始化失败");
+            }
+        }
+
+
         [JSFunctin]
         public static async void DOTaskWithAsync(string str)
         {
@@ -86,7 +140,7 @@ namespace MiniBlinkPinvokeDemo
 
         private void button2_Click(object sender, EventArgs e)
         {
-           blinkBrowser1.ShowDevtools(Application.StartupPath + @"\front_end\inspector.html");
+            blinkBrowser1.ShowDevtools(Application.StartupPath + @"\front_end\inspector.html");
             //MiniBlinkPinvoke.BlinkBrowserPInvoke.wkeSetDebugConfig(blinkBrowser1.handle, "showDevTools", Application.StartupPath + @"\front_end\inspector.html");
         }
     }
