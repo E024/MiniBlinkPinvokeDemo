@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MiniBlinkPinvokeDemo
@@ -57,56 +56,69 @@ namespace MiniBlinkPinvokeDemo
         {
             //只是简单实现下载，可以模仿其他下载界面，先弹出一个窗体，让用户选择保存路径文件名什么的。
             //使用前先拷贝 libs/XL 目录中文件到软件运行目录。
-            var initSuccess = XL.XL_Init();
-            if (initSuccess)
+            if (File.Exists("xldl.dll"))
             {
-                XL.DownTaskParam p = new XL.DownTaskParam()
+                var initSuccess = XL.XL_Init();
+                if (initSuccess)
                 {
-                    IsResume = 0,
-                    szTaskUrl = textBox1.Text,
-                    szFilename = url.Substring(url.LastIndexOf('/') + 1),//简单处理文件名，实际中还需要单独处理，这里有BUG
-                    szSavePath = AppDomain.CurrentDomain.BaseDirectory
-                };
-                taskPtr = XL.XL_CreateTask(p);
-                var startSuccess = XL.XL_StartTask(taskPtr);
-                if (startSuccess)
-                {
-                    queryTimer.Interval = 500;//半秒查询一次状态
-                    queryTimer.Tick += (s, e) =>
+                    XL.DownTaskParam p = new XL.DownTaskParam()
                     {
-                        var queryRes = XL.XL_QueryTaskInfoEx(taskPtr, taskInfo);
-                        if (queryRes)
-                        {
-                            if (taskInfo.stat == XL.DOWN_TASK_STATUS.TSC_COMPLETE)
-                            {
-                                queryTimer.Enabled = false;
-                                //下载完成。
-                                Console.WriteLine("下载完成");
-                            }
-                            else
-                            {
-                                Console.WriteLine(string.Format("{0} {1} 进度{2},速度{3},状态{4}", DateTime.Now, taskInfo.szFilename, taskInfo.fPercent, taskInfo.nSpeed, taskInfo.stat));
-                            }
-                        }
+                        IsResume = 0,
+                        szTaskUrl = textBox1.Text,
+                        szFilename = url.Substring(url.LastIndexOf('/') + 1),//简单处理文件名，实际中还需要单独处理，这里有BUG
+                        szSavePath = AppDomain.CurrentDomain.BaseDirectory
                     };
-                    queryTimer.Enabled = true;
+                    taskPtr = XL.XL_CreateTask(p);
+                    var startSuccess = XL.XL_StartTask(taskPtr);
+                    if (startSuccess)
+                    {
+                        queryTimer.Interval = 500;//半秒查询一次状态
+                        queryTimer.Tick += (s, e) =>
+                        {
+                            var queryRes = XL.XL_QueryTaskInfoEx(taskPtr, taskInfo);
+                            if (queryRes)
+                            {
+                                if (taskInfo.stat == XL.DOWN_TASK_STATUS.TSC_COMPLETE)
+                                {
+                                    queryTimer.Enabled = false;
+                                    MessageBox.Show("下载完成。" + taskInfo.stat);
+                                    //下载完成。
+                                    Console.WriteLine("下载完成");
+                                }
+                                else if (taskInfo.stat == XL.DOWN_TASK_STATUS.TSC_ERROR)
+                                {
+                                    queryTimer.Enabled = false;
+                                    MessageBox.Show("下载失败。"+ taskInfo.stat);
+                                }
+                                else
+                                {
+                                    Console.WriteLine(string.Format("{0} {1} 进度{2},速度{3},状态{4}", DateTime.Now, taskInfo.szFilename, taskInfo.fPercent, taskInfo.nSpeed, taskInfo.stat));
+                                }
+                            }
+                        };
+                        queryTimer.Enabled = true;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("XL_Init初始化失败");
                 }
             }
             else
             {
-                MessageBox.Show("XL_Init初始化失败");
+                MessageBox.Show("请先将 libs/XL 目录中文件到软件运行目录。");
             }
         }
 
 
-        [JSFunctin]
-        public static async void DOTaskWithAsync(string str)
-        {
-            await Task.Run(() =>
-            {
-                Dotaskfunction(str);
-            });
-        }
+        //[JSFunctin]
+        //public static async void DOTaskWithAsync(string str)
+        //{
+        //    await Task.Run(() =>
+        //    {
+        //        Dotaskfunction(str);
+        //    });
+        //}
         public static void Dotaskfunction(string s)
         {
             Thread.Sleep(1000 * 5);
