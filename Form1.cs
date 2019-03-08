@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -88,7 +89,7 @@ namespace MiniBlinkPinvokeDemo
                                 else if (taskInfo.stat == XL.DOWN_TASK_STATUS.TSC_ERROR)
                                 {
                                     queryTimer.Enabled = false;
-                                    MessageBox.Show("下载失败。"+ taskInfo.stat);
+                                    MessageBox.Show("下载失败。" + taskInfo.stat);
                                 }
                                 else
                                 {
@@ -154,6 +155,44 @@ namespace MiniBlinkPinvokeDemo
         {
             blinkBrowser1.ShowDevtools(Application.StartupPath + @"\front_end\inspector.html");
             //MiniBlinkPinvoke.BlinkBrowserPInvoke.wkeSetDebugConfig(blinkBrowser1.handle, "showDevTools", Application.StartupPath + @"\front_end\inspector.html");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            IntPtr mainFrameId = BlinkBrowserPInvoke.wkeWebFrameGetMainFrame(blinkBrowser1.handle);
+            int width = BlinkBrowserPInvoke.wkeGetContentWidth(blinkBrowser1.handle);
+            int height = BlinkBrowserPInvoke.wkeGetContentHeight(blinkBrowser1.handle);
+            wkeScreenshotSettings settings = new wkeScreenshotSettings
+            {
+                height = height,
+                width = width
+            };
+            settings.structSize = System.Runtime.InteropServices.Marshal.SizeOf(settings);
+            var bf = BlinkBrowserPInvoke.wkePrintToBitmap(blinkBrowser1.handle, mainFrameId, settings);
+            if (bf != IntPtr.Zero)
+            {
+
+                var data = (wkeMemBuf)Marshal.PtrToStructure(bf, typeof(wkeMemBuf));
+                if (data.data != IntPtr.Zero && data.length != 0)
+                {
+                    byte[] ys = new byte[data.length];
+                    Marshal.Copy(data.data, ys, 0, ys.Length);
+
+                    string fileName = Guid.NewGuid().ToString("n") + ".bmp";
+                    System.IO.File.WriteAllBytes(fileName, ys);
+                    MessageBox.Show("截图保存成功，图片地址为："+Application.StartupPath+"\\"+fileName);
+                }
+                else
+                {
+                    MessageBox.Show("截图失败，数据解析失败。");
+                }
+            }
+            else
+            {
+                MessageBox.Show("截图失败，返回空。");
+            }
+
+
         }
     }
 
