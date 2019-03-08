@@ -8,5 +8,6 @@ MiniBlinkPinvoke 调用简单示例
  * 5，后台调用JS方法。
  * 6，JS异步调用后台异步方法。
  * 7，各种回调。
+ * 8，网页截图
 ## 项目依赖
 https://github.com/E024/MiniBlinkPinvoke
